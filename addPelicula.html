@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Añadir Pelicula</title>
+    </head>
+    <body>
+        <form action="submitPelicula" method="post">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            
+            <label for="year">Año:</label>
+            <input type="number" id="anyo" name="year" required><br><br>
+            
+            <label for="director">Director:</label>
+            <input type="text" id="director" name="director" required><br><br>
+            
+            <input type="submit" value="Añadir Pelicula" onclick="submitForm(event)">
+            
+            <script>
+                function submitForm(event) {
+                    event.preventDefault();
+                    
+                    const name = document.getElementById('name').value;
+                    const anyo = document.getElementById('anyo').value;
+                    const director = document.getElementById('director').value;
+                    
+                    const pelicula = {
+                        "name": name,
+                        "anyo": anyo,
+                        "director": director
+                    };
+
+                    // Verificar que el JSON esté bien formado
+                    try {
+                        const jsonString = JSON.stringify(pelicula);
+                        console.log('JSON:', jsonString);
+
+                        fetch('http://localhost:8080/peliculas/addPelicula', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: jsonString
+                        })
+                        .then(data => {
+                            console.log('Success:', data);
+                            window.location.href = 'index.html';
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                    } catch (e) {
+                        console.error('Invalid JSON:', e);
+                    }
+                }
+            </script>
+        </form>
+    </body>
+</html>

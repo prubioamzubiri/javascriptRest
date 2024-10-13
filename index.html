@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Home</title>
+</head>
+
+
+    <body>
+        <h1> Peliculas </h1>
+
+        <a href="addPelicula.html">Añadir Peliculas</a>
+
+        <ul id="peliculas-list"></ul>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('http://localhost:8080/peliculas')
+                    .then(response => response.json())
+                    .then(data => {
+                        const peliculasList = document.getElementById('peliculas-list');
+                        data.forEach(pelicula => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = pelicula.name; // Assuming each pelicula has a 'title' property
+                            peliculasList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching peliculas:', error));
+            });
+        </script>
+    </body>
+
+</html>
